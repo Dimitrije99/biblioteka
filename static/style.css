@@ -1,0 +1,23 @@
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    background-color: black;
+    color:white;
+}
+
+button {
+    background-color: black;
+    color: white;
+}
+
+.datum-ok {
+    color: black;
+}
+
+.datum-not-ok {
+    color:red;
+}
+
+body {
+    background-image: url("https://cdn.britannica.com/92/216092-050-4B31C2B7/custom-library.jpg");
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteka</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <h1>BIBLIOTEKA</h1>
+       <div v-if="uspesanLogin">
+        <button @click="navigate('knjige')" v-if="logovaniKorisnik.tip_korisnika_id == 2 || 3">Knjige</button>
+        <button @click="navigate('autor')" v-if="logovaniKorisnik.tip_korisnika_id == 2">Autori</button>
+        <button @click="navigate('izdavackaKuca')" v-if="logovaniKorisnik.tip_korisnika_id == 2">Izdavacka Kuca</button>
+        <button @click="navigate('korisnik')" v-if="logovaniKorisnik.tip_korisnika_id == 1">Korisnici</button>
+        <button @click="navigate('iznajmljivanje')" v-if="logovaniKorisnik.tip_korisnika_id == 2">Iznajmljivanje</button>
+        <button @click="logout()">Logout</button>
+    </div> 
+        <div>
+            <div v-if="stranicaZaPrikaz == 'knjige'">
+                <h2>Tabela knjiga</h2>
+                <button  @click="pokaziFormuDodavanjeKnjige()" v-if="logovaniKorisnik.tip_korisnika_id == 2">Dodaj Knjigu</button>
+                <tabela-knjiga v-bind:logovani-korisnik="logovaniKorisnik" v-bind:knjige="knjige" v-on:odabrana-za-brisanje="ukloniKnjigu"
+                    v-on:odabrana-za-promenu="dobaviKnjigu"></tabela-knjiga>
+                <forma-knjiga v-bind:flag-dodavanje="flagDodavanjeKnjige" v-bind:flag-izmena="flagIzmenaKnjige" v-bind:autori="autori" v-bind:izdavacke-kuce="izdavackeKuce"
+                    v-on:kreiranje-knjige="dodajNovuKnjigu" v-bind:knjiga-za-izmenu="knjiga"
+                    v-on:izmena-knjige="izmeniKnjigu"></forma-knjiga>
+            </div>
+            <div v-if="stranicaZaPrikaz == 'autor'">
+                <h2>Tabela autora</h2>
+                <button  @click="pokaziFormuDodavanjeAutora()">Dodaj Autora</button>
+                <tabela-autor v-bind:autori="autori" v-on:odabran-za-brisanje="ukoniAutora"
+                    v-on:odabran-za-promenu="dobaviAutora"></tabela-autor>
+                <forma-autor v-bind:flag-dodavanje="flagDodavanjeAutora" v-bind:flag-izmena="flagIzmenaAutora" v-on:kreiranje-autora="dodajAutora" v-bind:autor-za-izmenu="autor"
+                    v-on:izmena-autora="izmeniAutora"></forma-autor>
+            </div>
+            <div v-if="stranicaZaPrikaz == 'izdavackaKuca'">
+                <h2>Tabela izdavackih kuca</h2>
+                <button  @click="pokaziFormuDodavanjeIzdavackeKuce()">Dodaj Izdavacku Kucu</button>
+                <tabela-izdavacka-kuca v-bind:izdavacke-kuce="izdavackeKuce" v-on:kuca-za-brisanje="ukloniKucu"
+                    v-on:odabrana-za-promenu="dobaviIzdavackuKucu"></tabela-izdavacka-kuca>
+                <forma-izdavacka-kuca v-bind:flag-dodavanje="flagDodavanjeIzdavackeKuce" v-bind:flag-izmena="flagIzmenaIzdavackeKuce" v-on:kreiranje-izdavacke-kuce="dodajNovuIzdavackuKucu"
+                    v-bind:kuca-za-izmenu="izdavackaKuca" v-on:izmena-kuce="izmeniKucu"></forma-izdavacka-kuca>
+            </div>
+            <div v-if="stranicaZaPrikaz == 'korisnik'">
+                <h2>Tabela korisnika</h2>
+                <button  @click="pokaziFormuDodavanjeKorisnika()">Dodaj korisnika</button>
+                <tabela-korisnik  v-on:odabran-za-brisanje="ukloniKorisnika" v-bind:korisnici="korisnici" v-on:odabran-za-promenu="dobaviKorisnika"></tabela-korisnik>
+                <forma-korisnik v-bind:flag-dodavanje="flagDodavanjeKorisnika" v-bind:flag-izmena="flagIzmenaKorisnika" v-bind:tip-korisnika="tipKorisnika" v-bind:korisnik-za-izmenu="korisnik" v-on:kreiranje-korisnika="dodajNovogKorisnika" v-on:izmena-korisnika="izmeniKorisnika"></forma-korisnik>
+
+            </div>
+            <div v-if="stranicaZaPrikaz == 'iznajmljivanje'">
+                <h2>Tabela iznajmljivanja</h2>
+                 <button  @click="pokaziFormuDodajIznajmljivanje()">Novo iznajmljivanje</button>
+                <tabela-iznajmljivanje v-on:vracanje-knjige="vratiKnjigu" v-bind:iznajmljivanja="iznajmljeneKnjige"
+                    v-on:odabrano-za-brisanje="ukloniIznajmljivanje"></tabela-iznajmljivanje>
+                <forma-iznajmljivanje  v-bind:flag-dodavanje="flagDodavanjeIznajmljivanja" v-bind:knjige="knjige" v-bind:korisnici="korisnici"
+                    v-on:kreiranje-iznajmljivanja="dodajNovoIznajmljivanje"></forma-iznajmljivanje>
+            </div>
+            <div v-if="prikaziFormuZaLogovanje">
+               <forma-login v-on:send-login-data="login"></forma-login>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="app/app.js" type="module"></script>
+
+</body>
+</html>
